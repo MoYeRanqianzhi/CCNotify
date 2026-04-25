@@ -1,0 +1,20 @@
+[package]
+name = "ccnotify"
+version = "0.1.0"
+edition = "2021"
+description = "Cross-platform notification tool for Claude Code"
+license = "MIT"
+
+[features]
+default = []
+sound = []
+
+[target.'cfg(windows)'.dependencies]
+winrt-notification = "0.5"
+
+[profile.release]
+strip = true
+lto = true
+opt-level = "z"
+codegen-units = 1
+panic = "abort"
