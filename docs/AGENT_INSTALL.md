@@ -13,23 +13,69 @@ Determine the user's OS and architecture:
 
 ## Step 2: Download the binary
 
-> **IMPORTANT**: The download URLs below will be populated after the first release is published.
-> Check https://github.com/MoYeRanqianzhi/CCNotify/releases/latest for actual download links.
-
-Download the appropriate binary for the user's platform from the latest GitHub release.
+The release page: https://github.com/MoYeRanqianzhi/CCNotify/releases/latest
 
 There are two versions per platform:
-- `ccnotify` — notification with system default sound (smaller)
-- `ccnotify-sound` — notification + custom audio file playback via `--sound` flag (slightly larger)
+- `ccnotify` — notification with system default sound (smaller, ~133KB)
+- `ccnotify-sound` — notification + custom audio file playback via `--sound` flag (~150KB)
 
 Ask the user which version they prefer. Default to `ccnotify-sound` for maximum flexibility.
 
+### Download URLs (v0.2.0)
+
+**ccnotify (notification only):**
+
+| Platform | URL |
+|----------|-----|
+| Windows x86_64 | `https://github.com/MoYeRanqianzhi/CCNotify/releases/download/v0.2.0/ccnotify-x86_64-pc-windows-msvc.exe` |
+| macOS Intel | `https://github.com/MoYeRanqianzhi/CCNotify/releases/download/v0.2.0/ccnotify-x86_64-apple-darwin` |
+| macOS Apple Silicon | `https://github.com/MoYeRanqianzhi/CCNotify/releases/download/v0.2.0/ccnotify-aarch64-apple-darwin` |
+| Linux x86_64 | `https://github.com/MoYeRanqianzhi/CCNotify/releases/download/v0.2.0/ccnotify-x86_64-unknown-linux-gnu` |
+
+**ccnotify-sound (with audio playback):**
+
+| Platform | URL |
+|----------|-----|
+| Windows x86_64 | `https://github.com/MoYeRanqianzhi/CCNotify/releases/download/v0.2.0/ccnotify-sound-x86_64-pc-windows-msvc.exe` |
+| macOS Intel | `https://github.com/MoYeRanqianzhi/CCNotify/releases/download/v0.2.0/ccnotify-sound-x86_64-apple-darwin` |
+| macOS Apple Silicon | `https://github.com/MoYeRanqianzhi/CCNotify/releases/download/v0.2.0/ccnotify-sound-aarch64-apple-darwin` |
+| Linux x86_64 | `https://github.com/MoYeRanqianzhi/CCNotify/releases/download/v0.2.0/ccnotify-sound-x86_64-unknown-linux-gnu` |
+
+> For the latest version, always check https://github.com/MoYeRanqianzhi/CCNotify/releases/latest — the URLs above use the same naming pattern with the version tag replaced.
+
 ## Step 3: Install the binary
+
+Download the binary and place it in `$HOME/.claude/notify/`:
+
+### Windows
+
+```powershell
+mkdir -Force "$env:USERPROFILE\.claude\notify"
+# Download ccnotify-sound version (recommended):
+Invoke-WebRequest -Uri "https://github.com/MoYeRanqianzhi/CCNotify/releases/download/v0.2.0/ccnotify-sound-x86_64-pc-windows-msvc.exe" -OutFile "$env:USERPROFILE\.claude\notify\ccnotify.exe"
+```
+
+### macOS (Apple Silicon)
 
 ```bash
 mkdir -p "$HOME/.claude/notify"
-# Move/copy the downloaded binary to:
-# $HOME/.claude/notify/ccnotify      (or ccnotify.exe on Windows)
+curl -L -o "$HOME/.claude/notify/ccnotify" "https://github.com/MoYeRanqianzhi/CCNotify/releases/download/v0.2.0/ccnotify-sound-aarch64-apple-darwin"
+chmod +x "$HOME/.claude/notify/ccnotify"
+```
+
+### macOS (Intel)
+
+```bash
+mkdir -p "$HOME/.claude/notify"
+curl -L -o "$HOME/.claude/notify/ccnotify" "https://github.com/MoYeRanqianzhi/CCNotify/releases/download/v0.2.0/ccnotify-sound-x86_64-apple-darwin"
+chmod +x "$HOME/.claude/notify/ccnotify"
+```
+
+### Linux
+
+```bash
+mkdir -p "$HOME/.claude/notify"
+curl -L -o "$HOME/.claude/notify/ccnotify" "https://github.com/MoYeRanqianzhi/CCNotify/releases/download/v0.2.0/ccnotify-sound-x86_64-unknown-linux-gnu"
 chmod +x "$HOME/.claude/notify/ccnotify"
 ```
 
@@ -59,7 +105,7 @@ Read the user's `~/.claude/settings.json`. If a `hooks` key exists, merge into i
 
 ### With custom sound:
 
-If the user has a custom audio file they want to play, use this configuration:
+If the user has a custom audio file they want to play:
 
 ```json
 {

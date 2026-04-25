@@ -11,7 +11,7 @@ Cross-platform notification tool for [Claude Code](https://docs.anthropic.com/en
 Give the following to any of your AI coding agents to auto-configure CCNotify:
 
 ```
-Read https://github.com/MoYeRanqianzhi/CCNotify/blob/master/docs/AGENT_INSTALL.md and follow the instructions to install and configure CCNotify for Claude Code.
+Read https://raw.githubusercontent.com/MoYeRanqianzhi/CCNotify/master/docs/AGENT_INSTALL.md and follow the instructions to install and configure CCNotify for Claude Code.
 ```
 
 ## Features

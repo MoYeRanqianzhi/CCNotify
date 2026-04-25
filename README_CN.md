@@ -11,7 +11,7 @@
 将以下文本发送给你的任意 AI 编程助手，即可自动完成 CCNotify 的安装配置：
 
 ```
-Read https://github.com/MoYeRanqianzhi/CCNotify/blob/master/docs/AGENT_INSTALL.md and follow the instructions to install and configure CCNotify for Claude Code.
+Read https://raw.githubusercontent.com/MoYeRanqianzhi/CCNotify/master/docs/AGENT_INSTALL.md and follow the instructions to install and configure CCNotify for Claude Code.
 ```
 
 ## 功能
