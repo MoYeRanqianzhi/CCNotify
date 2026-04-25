@@ -1,0 +1,83 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+            ext: .exe
+          - target: x86_64-apple-darwin
+            os: macos-latest
+          - target: aarch64-apple-darwin
+            os: macos-latest
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Build notification-only
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Rename notification-only binary
+        shell: bash
+        run: |
+          src="target/${{ matrix.target }}/release/ccnotify${{ matrix.ext }}"
+          dst="ccnotify-${{ matrix.target }}${{ matrix.ext }}"
+          cp "$src" "$dst"
+
+      - name: Build with sound
+        run: cargo build --release --target ${{ matrix.target }} --features sound
+
+      - name: Rename sound binary
+        shell: bash
+        run: |
+          src="target/${{ matrix.target }}/release/ccnotify${{ matrix.ext }}"
+          dst="ccnotify-sound-${{ matrix.target }}${{ matrix.ext }}"
+          cp "$src" "$dst"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: binaries-${{ matrix.target }}
+          path: |
+            ccnotify-${{ matrix.target }}${{ matrix.ext }}
+            ccnotify-sound-${{ matrix.target }}${{ matrix.ext }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: List artifacts
+        run: ls -lhR artifacts/
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            --title "CCNotify ${{ github.ref_name }}" \
+            --generate-notes \
+            artifacts/*

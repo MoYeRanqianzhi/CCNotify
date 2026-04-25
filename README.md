@@ -1,15 +1,25 @@
 # CCNotify
 
-Cross-platform notification tool for [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Sends a native OS notification when Claude Code finishes a task.
+[中文文档](README_CN.md)
+
+Cross-platform notification tool for [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Sends a native OS notification (with sound) when Claude Code finishes a task.
 
 **133KB** binary. No runtime dependencies.
 
+## AI Agent Quick Setup
+
+Give the following to any of your AI coding agents to auto-configure CCNotify:
+
+```
+Read https://github.com/MoYeRanqianzhi/CCNotify/blob/master/docs/AGENT_INSTALL.md and follow the instructions to install and configure CCNotify for Claude Code.
+```
+
 ## Features
 
-| Version | Binary | Size | Description |
-|---------|--------|------|-------------|
-| `ccnotify` | `ccnotify.exe` | 133KB | System notification with default sound |
-| `ccnotify-sound` | `ccnotify-sound.exe` | 150KB | + Custom audio file playback via `--sound` |
+| Version | Size | Description |
+|---------|------|-------------|
+| `ccnotify` | ~133KB | System notification with default OS sound |
+| `ccnotify-sound` | ~150KB | + Custom audio file playback via `--sound` |
 
 ### Platform Support
 
@@ -21,9 +31,16 @@ Cross-platform notification tool for [Claude Code](https://docs.anthropic.com/en
 
 ## Installation
 
+### Pre-built Binaries
+
+Download from [Releases](https://github.com/MoYeRanqianzhi/CCNotify/releases).
+
 ### From Source
 
 ```bash
+git clone https://github.com/MoYeRanqianzhi/CCNotify.git
+cd CCNotify
+
 # Notification only
 cargo build --release
 
@@ -31,11 +48,7 @@ cargo build --release
 cargo build --release --features sound
 ```
 
-Binary output: `target/release/ccnotify(.exe)`
-
-### Pre-built
-
-Download from [Releases](https://github.com/user/ccnotify/releases).
+Output: `target/release/ccnotify(.exe)`
 
 ## Usage
 
@@ -47,10 +60,11 @@ ccnotify
 ccnotify -t "Build Done" -b "All tests passed"
 
 # With custom sound (sound version only)
-ccnotify-sound -t "Done" -b "Task finished" -s "/path/to/sound.mp3"
+ccnotify -s "/path/to/sound.mp3"
+ccnotify -t "Done" -b "Task finished" -s "/path/to/sound.mp3"
 ```
 
-## Claude Code Hook Configuration
+## Claude Code Hook Setup
 
 Add to `~/.claude/settings.json`:
 
@@ -61,10 +75,27 @@ Add to `~/.claude/settings.json`:
       {
         "hooks": [
           {
-            // Notification only
             "command": "$HOME/.claude/notify/ccnotify",
-            // Or with custom sound:
-            // "command": "$HOME/.claude/notify/ccnotify-sound -s $HOME/.claude/notify/sound.mp3",
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ]
+  }
+}
+```
+
+Or with custom sound:
+
+```jsonc
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "$HOME/.claude/notify/ccnotify -s $HOME/.claude/notify/sound.mp3",
             "type": "command"
           }
         ],
@@ -92,4 +123,4 @@ OPTIONS:
 
 ## License
 
-MIT
+[MIT](LICENSE)
